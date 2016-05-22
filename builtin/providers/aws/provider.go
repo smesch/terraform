@@ -116,6 +116,7 @@ func Provider() terraform.ResourceProvider {
 			"aws_iam_policy_document": dataSourceAwsIamPolicyDocument(),
 			"aws_s3_bucket_object":    dataSourceAwsS3BucketObject(),
 			"aws_subnet":              dataSourceAwsSubnet(),
+			"aws_vpc":                 dataSourceAwsVpc(),
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
