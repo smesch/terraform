@@ -17,6 +17,14 @@ func tagsSchema() *schema.Schema {
 	}
 }
 
+func tagsSchemaComputed() *schema.Schema {
+	return &schema.Schema{
+		Type:     schema.TypeMap,
+		Optional: true,
+		Computed: true,
+	}
+}
+
 // setTags is a helper to set the tags for a resource. It expects the
 // tags field to be named "tags"
 func setTags(conn *ec2.EC2, d *schema.ResourceData) error {
