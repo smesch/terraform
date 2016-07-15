@@ -192,6 +192,13 @@ func resourceAwsRDSCluster() *schema.Resource {
 					return
 				},
 			},
+
+			"kms_key_id": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 		},
 	}
 }
@@ -324,6 +331,10 @@ func resourceAwsRDSClusterCreate(d *schema.ResourceData, meta interface{}) error
 			createOpts.PreferredMaintenanceWindow = aws.String(v.(string))
 		}
 
+		if attr, ok := d.GetOk("kms_key_id"); ok {
+			createOpts.KmsKeyId = aws.String(attr.(string))
+		}
+
 		log.Printf("[DEBUG] RDS Cluster create options: %s", createOpts)
 		resp, err := conn.CreateDBCluster(createOpts)
 		if err != nil {
@@ -413,6 +424,7 @@ func resourceAwsRDSClusterRead(d *schema.ResourceData, meta interface{}) error {
 	d.Set("backup_retention_period", dbc.BackupRetentionPeriod)
 	d.Set("preferred_backup_window", dbc.PreferredBackupWindow)
 	d.Set("preferred_maintenance_window", dbc.PreferredMaintenanceWindow)
+	d.Set("kms_key_id", dbc.KmsKeyId)
 
 	var vpcg []string
 	for _, g := range dbc.VpcSecurityGroups {
